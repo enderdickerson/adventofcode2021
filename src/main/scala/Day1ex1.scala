@@ -1,8 +1,8 @@
 object Day1ex1 extends App {
-  def depthChecker(input: Seq[Int]): Int =
-    input.zipWithIndex.foldLeft(0) {
+  val depthChecker = (input: Seq[Int]) =>
+    input.zipWithIndex.drop(1).foldLeft(0) {
       case (acc, (curr, index)) => {
-        if (curr > input((index - 1) max 0)) acc + 1 else acc
+        if (curr > input(index - 1)) acc + 1 else acc
       }
     }
 
