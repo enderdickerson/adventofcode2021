@@ -1,6 +1,6 @@
 import scala.io.Source
 
-object Day3pt1 extends App {
+object Day3 extends App {
   val findPwrConsumption = (input: Seq[String]) =>
     input.map(_.toList.map(_.toString.toInt)).transpose
       .map(_.groupBy(y => y).view.mapValues(_.size).toMap)

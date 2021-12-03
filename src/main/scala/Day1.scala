@@ -1,6 +1,13 @@
 import scala.io.Source
 
-object Day1ex2 extends App {
+object Day1 extends App {
+  val depthChecker = (input: Seq[String]) =>
+    input.zipWithIndex.drop(1).foldLeft(0) {
+      case (acc, (curr, index)) => {
+        if (curr.toInt > input(index - 1).toInt) acc + 1 else acc
+      }
+    }
+
   val sumIncreases = (input: Seq[Int]) =>
     input.zipWithIndex.drop(1).foldLeft(0) {
       case (acc, (curr, index)) => {
@@ -11,6 +18,7 @@ object Day1ex2 extends App {
   val asThreeWindow = (input: Seq[String]) =>
     input.zipWithIndex.take(input.size - 2).map((x, y) => x.toInt + input(y + 1).toInt + input(y + 2).toInt)
 
+//  println(depthChecker(Source.fromFile("src/main/scala/day1inputtest.txt").getLines.toSeq))
+  println(depthChecker(Source.fromFile("src/main/scala/day1input.txt").getLines.toSeq))
   println(sumIncreases(asThreeWindow(Source.fromFile("src/main/scala/day1input.txt").getLines.toSeq)))
 }
-
