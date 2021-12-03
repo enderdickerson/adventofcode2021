@@ -9,5 +9,6 @@ object Day3pt1 extends App {
       .map(x => Integer.parseInt(x.mkString, 2))
       .product
 
-  println(findPwrConsumption(Source.fromFile("src/main/scala/day3inputtest.txt").getLines.toSeq))
+//  println(findPwrConsumption(Source.fromFile("src/main/scala/day3inputtest.txt").getLines.toSeq))
+  println(findPwrConsumption(Source.fromFile("src/main/scala/day3input.txt").getLines.toSeq))
 }
