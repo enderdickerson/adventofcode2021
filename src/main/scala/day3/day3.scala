@@ -1,6 +1,6 @@
 import scala.io.Source
 
-object Day3 extends App {
+object day3 extends App {
   val findPwrConsumption = (input: Seq[String]) =>
     input.map(_.toList.map(_.toString.toInt)).transpose
       .map(_.groupBy(y => y).view.mapValues(_.size).toMap)
@@ -9,6 +9,6 @@ object Day3 extends App {
       .map(x => Integer.parseInt(x.mkString, 2))
       .product
 
-//  println(findPwrConsumption(Source.fromFile("src/main/scala/day3inputtest.txt").getLines.toSeq))
-  println(findPwrConsumption(Source.fromFile("src/main/scala/day3input.txt").getLines.toSeq))
+  //  println(findPwrConsumption(Source.fromFile("src/main/scala/day3/day3inputtest.txt").getLines.toSeq))
+  println(findPwrConsumption(Source.fromFile("src/main/scala/day3/day3input.txt").getLines.toSeq))
 }
