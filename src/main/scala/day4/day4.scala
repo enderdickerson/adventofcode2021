@@ -3,8 +3,7 @@ package day4
 import scala.io.Source
 
 object day4 extends App {
-  val parseCalls = (input: Seq[String]) =>
-    input(0).split(",").toList
+  val parseCalls = (input: Seq[String]) => input(0).split(",").toList
 
   val addIfEmpty = (input: Seq[Seq[String]], index: Int) =>
     if (!(input.size >= index + 1)) input :+ Seq[String]() else input
@@ -35,9 +34,8 @@ object day4 extends App {
     } else 0
   }
 
-  val calculateScore = (board: Seq[String], played: Seq[String]) => {
-    List(checkVerticalWin(board, played), checkHorizontalWin(board, played)).sum * played.last.toInt
-  }
+  val calculateScore = (board: Seq[String], played: Seq[String]) =>
+    (checkVerticalWin(board, played) max checkHorizontalWin(board, played)) * played.last.toInt
 
   val filterBoards = (boards: Seq[Seq[String]], played: Seq[String]) => {
     val wonVertically = boards.filter(board => checkVerticalWin(board, played) > 0)
@@ -47,7 +45,7 @@ object day4 extends App {
     else boards
   }
 
-  val play = (plays: List[String], boards: Seq[Seq[String]]) => {
+  val playToWin = (plays: List[String], boards: Seq[Seq[String]]) => {
     val (winningBoard, played) = plays.foldLeft((boards,Seq[String]()))((acc, curr) => {
       val (boardSeq, played) = acc
       if (boardSeq.size <= 1) acc
@@ -56,12 +54,28 @@ object day4 extends App {
         (filterBoards(boardSeq, withPlay), withPlay)
       }
     })
-    (winningBoard(0), played)
+    calculateScore(winningBoard(0), played)
+  }
+
+  val filterWinningBoards = (boards: Seq[Seq[String]], played: Seq[String]) =>
+    boards.filter(board => checkVerticalWin(board, played) > 0 || checkHorizontalWin(board, played) > 0)
+
+  val filterActiveBoards = (boards: Seq[Seq[String]], played: Seq[String]) =>
+    boards.filter(board => checkVerticalWin(board, played) == 0 && checkHorizontalWin(board, played) == 0)
+
+  val playToLose = (plays: List[String], boards: Seq[Seq[String]]) => {
+    val (_, winners, played) = plays.foldLeft((boards, Seq[Seq[String]](), Seq[String]()))((acc, curr) => {
+      val (inPlay, winners, played) = acc
+      if (winners.size == boards.size) acc
+      else {
+        val withPlay = played :+ curr
+        (filterActiveBoards(inPlay, withPlay), winners ++ filterWinningBoards(inPlay, withPlay), withPlay)
+      }
+    })
+    calculateScore(winners.last, played)
   }
 
   val lines = Source.fromFile("src/main/scala/day4/day4.txt").getLines.toSeq
-  val (winningBoard,played) = play(parseCalls(lines), getBoards(lines.drop(2)))
-  val score = calculateScore(winningBoard, played)
-
-  println(s"Winning round - score of: $score")
+//  println(playToWin(parseCalls(lines), getBoards(lines.drop(2))))
+  println(playToLose(parseCalls(lines), getBoards(lines.drop(2))))
 }
