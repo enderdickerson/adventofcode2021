@@ -7,6 +7,7 @@ object day5 extends App {
   case class Line(start: Coord, end: Coord) {
     def vert(): Boolean = start.x == end.x
     def hor(): Boolean = start.y == end.y
+    def slope(): Int = (end.y - start.y) / (end.x - start.x)
     def expand(): List[Coord] = {
       if (vert()) {
         val range = if (start.y < end.y) start.y to end.y else end.y to start.y
@@ -14,10 +15,17 @@ object day5 extends App {
           acc :+ Coord(start.x, curr)
         })
       }
-      else {
+      else if (hor()) {
         val range = if (start.x < end.x) start.x to end.x else end.x to start.x
         range.foldLeft(List[Coord]())((acc, curr) => {
           acc :+ Coord(curr, start.y)
+        })
+      }
+      else {
+        (0 to Math.abs(end.y - start.y)).foldLeft(List[Coord]())((acc, curr) => {
+          val newX = if (start.x < end.x) start.x + curr else start.x - curr
+          val newY = if (start.y < end.y) start.y + curr else start.y - curr
+          acc :+ Coord(newX, newY)
         })
       }
     }
@@ -30,8 +38,10 @@ object day5 extends App {
         x match {
           case cmdParser(x1, y1, x2, y2) => Line(Coord(x1.toInt, y1.toInt), Coord(x2.toInt, y2.toInt))
         }
-      }).filter(x => x.vert() || x.hor()).flatMap(x => x.expand()).groupBy(x => x).mapValues(_.size)
-      .toMap.filter(x => x._2 > 1).size
+      })
+      .flatMap(x => x.expand())
+      .groupBy(x => x).mapValues(_.size).toMap
+      .filter(x => x._2 > 1).size
   }
 
   println(findBigVents(Source.fromFile("src/main/scala/day5/day5.txt").getLines.toSeq))

@@ -6,7 +6,7 @@ They tend to form in lines; the submarine helpfully produces a list of nearby li
 
 0,9 -> 5,9
 
-8,0 -> 0,8
+8,0 -> 0,8 = (8,0), (7,1), (6,2), (5,3), (4,4), (3,5), (2,6), (1,7), (0,8)
 
 9,4 -> 3,4
 
@@ -22,7 +22,7 @@ They tend to form in lines; the submarine helpfully produces a list of nearby li
 
 0,0 -> 8,8
 
-5,5 -> 8,2
+5,5 -> 8,2 = (6,4), (7,3), (8,2)
 
 Each line of vents is given as a line segment in the format x1,y1 -> x2,y2 where x1,y1 are the coordinates of one end the line segment and x2,y2 are the coordinates of the other end. These line segments include the points at both ends. In other words:
 
