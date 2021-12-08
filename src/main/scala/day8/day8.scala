@@ -26,26 +26,60 @@ object day8 extends App {
     // acdeg = 2
 
   // 8 (abcdefg)- 4 (bcdf) = (aeg) - a = eg
-  // 4 (bcdf) - 1 (cf) = bc
+  // 4 (bcdf) - 1 (cf) = bd
 
   // to calculate 'a' wire
     // find the different letter between the size 2 sequence and the size 3 sequence
 
+  val convert = (input: List[String]) => {
+    val baseNumbers = input.map(x => {
+      (x.length match {
+        case 3 => "7"
+        case 4 => "4"
+        case 2 => "1"
+        case 7 => "8"
+        case _ => ""
+      }, x.sorted)}).filter(_._1 != "").toMap
 
-  val calculate = (input: List[String]) =>
-    input
-      .map(x => x.split('|')(1).trim().split(' ').toList
-        .map(x => {
-          x.length match {
-            case 3 => 7
-            case 4 => 4
-            case 2 => 1
-            case 7 => 8
-            case _ => 0
-          }
-        }))
-      .map(x => x.filter(_ != 0).size)
-      .sum
+    val others = input.filter(x => baseNumbers.values.filter(y => y == x).size == 0)
 
-  println(calculate(Source.fromFile("src/main/scala/day8/day8.txt").getLines.toList))
+    val fourOneDiff = baseNumbers("4").filter(x => baseNumbers("1").contains(x))
+
+//    val mapped = others.map(x => {
+//      x match {
+//        case n if n.size == 6 &&
+//      }
+//    })
+
+    println(s"others: $others")
+    println(s"fourOneDiff: $fourOneDiff")
+
+    baseNumbers
+  }
+
+  val solveOne = (input: String) => {
+    val allDigits = input.split('|')(0).trim().split(' ').sortBy(_.size).map(_.sorted).toList
+    val converted = convert(allDigits)
+    converted
+  }
+
+  val calculate = (input: List[String]) => {
+    solveOne(input(0))
+//    val endValues = input.map(x => x.split('|')(1).trim().split(' ').toList)
+//    val startValues = input.map(x => x.)
+//    endValues
+
+//      .map(x => {
+//        (x.length match {
+//          case 3 => "7"
+//          case 4 => "4"
+//          case 2 => "1"
+//          case 7 => "8"
+//          case _ => ""
+//        }, x.sorted)
+//      }).filter(x => x._1 != ""))
+  }
+  //      .map(x => x.filter(_ != 0))
+
+  println(calculate(Source.fromFile("src/main/scala/day8/day8test.txt").getLines.toList))
 }
